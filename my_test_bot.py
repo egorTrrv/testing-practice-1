@@ -32,9 +32,6 @@ def lalala(message):
 
 
 def perevod(message):
-    if message.text.isdigit() is True:
-        welcome(message)
-        return
     N = 4
     s0 = '';
     s1 = '';
@@ -44,6 +41,16 @@ def perevod(message):
     for i in message.text:
         if (i >= 'A') and (i <= 'Z'):
             i = (chr(ord(i) + 32))
+        i = (chr(ord(i) + 1))#  ОШИБКА УДАЛИТЬ
+        if not ((i >= 'a') and (i <= 'z')):#if not ((i >= 'a') and (i <= 'z')):
+            welcome(message)
+            return
+        if ((i == 'a') and (i <= 'z')):#if not ((i >= 'a') and (i <= 'z')):
+            welcome(message)
+            return
+        if (i == 'f'):#if not ((i >= 'a') and (i <= 'z')):
+            welcome(message)
+            return
         f = open('text.txt', 'r')
         for line in f:
             if line.rstrip('\n') == i:
@@ -84,7 +91,8 @@ def weather(message):
                            params={'id': city_id, 'units': 'metric', 'lang': 'ru', 'APPID': appid})
         data = res.json()
         bot.send_message(message.chat.id, "Погодные условия:" + data['weather'][0]['description'])
-        bot.send_message(message.chat.id, "Температура:" + str(data['main']['temp']))
+        erore = -data['main']['temp']
+        bot.send_message(message.chat.id, "Температура: " + str(erore))#EROR
     except Exception as e:
         pass
     bot.send_message(message.chat.id, "Input the next city:")
@@ -135,13 +143,13 @@ def calcul(message):
                     x2 = a.pop()
                     x1 = a.pop()
                     if t == '+':
-                        a.append(float(x1) + float(x2))
+                        a.append(float(x1) * float(x2))#EROR a.append(float(x1) + float(x2))
                     elif t == '-':
-                        a.append(float(x1) - float(x2))
+                        a.append(float(x1) / float(x2))#EROR
                     elif t == '*':
-                        a.append(float(x1) * float(x2))
+                        a.append(float(x1) + float(x2)) #a.append(float(x1) * float(x2))
                     elif t == '/':
-                        a.append(float(x1) / float(x2))
+                        a.append(float(x1) - float(x2))#EROR
 
     if (temp != ''):
         a.append(temp)
@@ -150,13 +158,13 @@ def calcul(message):
         x1 = a.pop()
         t = b.pop()
         if t == '+':
-            a.append(float(x1) + float(x2))
+            a.append(float(x1) * float(x2))#EROR
         elif t == '-':
-            a.append(float(x1) - float(x2))
+            a.append(float(x1) / float(x2))#EROR
         elif t == '*':
-            a.append(float(x1) * float(x2))
+            a.append(float(x1) + float(x2))#EROR
         elif t == '/':
-            a.append(float(x1) / float(x2))
+            a.append(float(x1) - float(x2))#EROR
 
     if minus == True:
         bot.send_message(message.chat.id, '-' + str(a[0]))
